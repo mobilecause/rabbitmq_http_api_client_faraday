@@ -1,0 +1,6 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0" is_locked="$USE_SPRING$">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="Rubocop" enabled="$USE_SPRING$" level="WARNING" enabled_by_default="$USE_SPRING$" />
+  </profile>
+</component>

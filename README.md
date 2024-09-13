@@ -1,6 +1,6 @@
 # RabbitMQ HTTP API Client for Ruby
 
-This gem is a [RabbitMQ HTTP API]() client for Ruby. It supports
+This gem is a [RabbitMQ HTTP API](http://hg.rabbitmq.com/rabbitmq-management/raw-file/450b7ea22cfd/priv/www/api/index.html) client for Ruby. It supports
 
  * Getting cluster overview information
  * Getting cluster nodes status (# file descriptors used, RAM consumption and so on)
@@ -18,44 +18,30 @@ and will support more HTTP API features in the future
 
 ## Supported Ruby Versions
 
- * CRuby 2.7 through 3.x
+ * CRuby 2.0 through 2.4.x
  * JRuby 9K
-
+ 
 ## Supported RabbitMQ Versions
 
-This library targets [RabbitMQ release series covered by community support](https://www.rabbitmq.com/release-information).
+ * RabbitMQ 3.x
 
-All versions require [RabbitMQ Management UI plugin](https://www.rabbitmq.com/docs/management/) to be installed and enabled.
+All versions require [RabbitMQ Management UI plugin](http://www.rabbitmq.com/management.html) to be installed and enabled.
 
 ## Installation
 
-Add this line to your application's Gemfile to
-use the latest version of this library:
+Add this line to your application's Gemfile:
 
 ``` ruby
-# Depends on Faraday 2.x
-gem 'rabbitmq_http_api_client', '>= 3.0.0'
-```
-
-If you **absolutely must** use Faraday 1.x, use the 2.x series:
-
-``` ruby
-# Depends on Faraday 1.x.
-# Consider using 3.0.0 and later versions.
-gem 'rabbitmq_http_api_client', '>= 2.2.0'
+gem 'rabbitmq_http_api_client', '>= 1.8.0'
 ```
 
 And then execute:
 
-``` shell
-bundle install
-```
+    bundle install
 
-Or install it manually with:
+Or install it yourself as:
 
-``` shell
-gem install rabbitmq_http_api_client
-```
+    gem install rabbitmq_http_api_client
 
 ## Usage
 
@@ -73,7 +59,7 @@ Use `RabbitMQ::HTTP::Client#connect` to specify RabbitMQ HTTP API endpoint (e.g.
 require "rabbitmq/http/client"
 
 endpoint = "http://127.0.0.1:15672"
-client = RabbitMQ::HTTP::Client.new(endpoint, username: "guest", password: "guest")
+client = RabbitMQ::HTTP::Client.new(endpoint, :username => "guest", :password => "guest")
 ```
 
 Alternatively, credentials can be specified in the endpoint URI:
@@ -130,6 +116,7 @@ h     = client.overview
 # List cluster nodes with detailed status info for each one of them
 nodes = client.list_nodes
 n     = nodes.first
+puts n.sockets_used
 puts n.mem_used
 puts n.run_queue
 
@@ -140,7 +127,7 @@ puts n.proc_used
 puts n.fd_total
 
 # Get Management Plugin extension list
-xs    = client.list_extensions
+xs    = client.list_extensions 
 
 # List all the entities (vhosts, queues, exchanges, bindings, users, etc)
 defs  = client.list_definitions
@@ -272,7 +259,7 @@ puts b.vhost
 # List all bindings in a vhost
 bs = client.list_bindings("/")
 
-# List all bindings between an exchange and a queue
+# List all binsings between an exchange and a queue
 bs = client.list_bindings_between_queue_and_exchange("/", "collector1.megacorp.local", "log.events")
 ```
 
@@ -360,24 +347,15 @@ ps = client.clear_permissions_of("/", "guest")
 
 ## Running Tests
 
-Before running the test suites, run a script that will set up the local node:
-
-``` shell
-export RUBY_RABBITMQ_HTTP_API_CLIENT_RABBITMQCTL="/path/to/sbin/rabbitmqctl"
-export RUBY_RABBITMQ_HTTP_API_CLIENT_RABBITMQ_PLUGINS="/path/to/sbin/rabbitmq-plugins"
-
-./bin/ci/before_build.sh
-```
-
-To run all specs:
-
-``` shell
-bundle install
-bundle exec rspec -cfd spec
-```
+    bundle install
+    bundle exec rspec -cfd spec
 
 The test suite assumes that RabbitMQ is running locally with stock settings
 and rabbitmq-management plugin enabled.
+
+## Continuous Integration
+
+[![Build Status](https://travis-ci.org/ruby-amqp/rabbitmq_http_api_client.svg?branch=master)](https://travis-ci.org/ruby-amqp/rabbitmq_http_api_client)
 
 
 ## Contributing
@@ -391,6 +369,7 @@ and rabbitmq-management plugin enabled.
 
 ## License & Copyright
 
-Double-licensed under the MIT and the Mozilla Public License 2.0 ([same as RabbitMQ](https://github.com/rabbitmq/rabbitmq-server/blob/main/LICENSE)).
+Double-licensed under the MIT and Mozilla Public License (same as RabbitMQ).
 
-(c) Michael S. Klishin, 2012-2024.
+(c) Michael S. Klishin, 2012-2017.
+
